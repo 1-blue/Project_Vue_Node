@@ -21,3 +21,7 @@ yarn-error.log*
 
 # Editor settings
 .vscode
+
+# 임시 미포함
+/config
+/test

@@ -8,6 +8,10 @@ const dotenv = require('dotenv');
 // DB
 const { sequelize } = require('./models');
 
+// passport
+const passport = require('passport');
+const passportConfig = require('./passport');
+
 // 소켓
 // const webSocket = require('./socket.js');
 
@@ -37,11 +41,18 @@ sequelize.sync({ force: false })
   })
   .catch((error) => {
     console.error(`DB연결실패 : ${error}`)
-  })
+  });
+
+// passport 실행
+passportConfig();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // 라우터
 const indexRouter = require('./routes');
+const authRouter = require('./routes/auth.js');
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 
 // 404에러처리
 app.use((req, res, next) => {
@@ -51,7 +62,7 @@ app.use((req, res, next) => {
 // 에러처리
 app.use((err, req, res, next) => {
   console.error(`에러미들웨어 : ${err}`);
-  res.send('Error');
+  res.send(err);
 });
 
 const server = app.listen(app.get('port'), ()=>{

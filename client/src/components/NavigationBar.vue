@@ -13,9 +13,15 @@
       </li>
 
       <!-- 인증페이지 -->
-      <li class="auth__link">
+      <!-- 로그인안했을경우 -->
+      <li class="auth__link" v-if="!isLogin">
         <router-link to="/login">LOGIN</router-link>
         <router-link to="/register">REGISTER</router-link>
+      </li>
+      <!-- 로그인 했을경우 -->
+      <li class="auth__link" v-else>
+        <span @click="logout">LOGOUT</span>
+        <router-link to="/user">MYINFO</router-link>
       </li>
     </ul>
 
@@ -24,18 +30,36 @@
 </template>
 
 <script>
+import { fetchLogout } from '../api/fetch.js';
 
 export default {
   name: 'NavigationBar',
+  methods: {
+    async logout(){
+      const message = await fetchLogout();
+      if(message === "logoutSeccess"){
+        this.$router.push('/home?message=logoutSuccess');
+        location.reload()
+      }
+    }
+  },
+  computed: {
+    isLogin(){
+      return this.$store.state.isLogin;
+    }
+  }
 }
 </script>
 
 <style>
 #navigation__bar__container{
   --navigation-height: 10vh;
+  --navigation-margin-bottom: 2em;
   --navigation-background-color: black;
   --link-interval: 2.5vw;
   --link-font-size: 1.5rem;
+
+  height: inherit;
 }
 
 .link__list{
@@ -44,6 +68,7 @@ export default {
   width: 100%;
   height: var(--navigation-height);
   background: var(--navigation-background-color);
+  margin-bottom: var(--navigation-margin-bottom);
 }
 /* navigation의 li상하 가운데정렬 */
 .link__list li{
@@ -51,14 +76,17 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.link__list span{
+  color: white;
+}
 /* li태그 끼리 간격조절 */
-.link__list a {
+.link__list a, .link__list span {
   margin: 0 var(--link-interval);
   font-size: var(--link-font-size);
   font-weight: bold;
 }
 /* li태그 hover */                                    /* 현재 선택한 페이지 표시 */
-.link__list a:hover, .router-link-exact-active {
+.link__list a:hover, .link__list span:hover, .router-link-exact-active {
   color: wheat;
   border-bottom: 7px solid wheat;
   padding-top: 3vh;
