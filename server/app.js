@@ -5,6 +5,12 @@ const morgan = require('morgan');
 const session = require('express-session');
 const dotenv = require('dotenv');
 
+// DB
+const { sequelize } = require('./models');
+
+// 소켓
+// const webSocket = require('./socket.js');
+
 dotenv.config();
 const app = express();
 app.set('port', process.env.PORT || 9000);
@@ -12,7 +18,6 @@ app.set('port', process.env.PORT || 9000);
 // 미들웨어
 app.use(morgan('dev'));
 app.use('/', express.static(path.join(__dirname, 'public')));
-
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -24,6 +29,15 @@ app.use(session({
     httpOnly: false,
   }
 }));
+
+// DB연결
+sequelize.sync({ force: false })
+  .then(() => {
+    console.log("DB연결성공");
+  })
+  .catch((error) => {
+    console.error(`DB연결실패 : ${error}`)
+  })
 
 // 라우터
 const indexRouter = require('./routes');
@@ -40,6 +54,8 @@ app.use((err, req, res, next) => {
   res.send('Error');
 });
 
-app.listen(app.get('port'), ()=>{
+const server = app.listen(app.get('port'), ()=>{
   console.log(`${app.get('port')}번 대기중`);
 });
+
+// webSocket(server);
