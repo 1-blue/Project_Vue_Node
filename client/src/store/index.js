@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         isLogin: false,			// 로그인상태일때
+        nickname: "",           // 로그인한 유저의 닉네임
     },
     mutations,
     actions,

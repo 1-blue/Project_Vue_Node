@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 module.exports = class Room extends Sequelize.Model {
   static init(sequelize){
     return super.init({
-      title: {
+      name: {
         type: Sequelize.STRING(20),
         allowNull: false,
         unique: true,
@@ -15,11 +15,12 @@ module.exports = class Room extends Sequelize.Model {
       personal: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        defaultValue: 10,
       }
     }, {
       sequelize,
       timestamps: true,
-      paranoid: true,
+      paranoid: false,
       underscored: false,
       modelName: "Room",
       tableName: "rooms",
@@ -29,7 +30,7 @@ module.exports = class Room extends Sequelize.Model {
   }
 
   static associate(db){
-    // 유저와 채팅방 N : N
+    // 유저와 채팅방 M : N
     db.Room.belongsToMany(db.User, { through: "UserRoom", foreignKey: "roomId", targetKey: "id" });
 
     // 채팅방과 채팅 1 : N

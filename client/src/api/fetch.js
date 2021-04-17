@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// 로그아웃시도
 async function fetchLogout(){
   try {
     const data = await axios.get('/auth/logout');
@@ -9,24 +10,50 @@ async function fetchLogout(){
   }
 }
 
-async function fetchCommunity(){
-  let data = await axios.get('/community');
-  return data.data;
+// 채팅방목록받기
+async function fetchRoom(){
+  try {
+    const data = await axios.get('/talk/room');
+    return data.data;
+  } catch (error) {
+    return error;
+  }
 }
 
-async function fetchPost(id){
-  let data = await axios.get(`/post/${id}`);
-  return data.data;
+// 채팅목록받기
+async function fetchChatting(name){
+  try {
+    const data = await axios.get(`/talk/chatting/${name}`);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
 }
 
-async function fetchComments(id){
-  let data = await axios.get(`/comment/${id}`);
-  return data.data;
+// room삭제권한확인
+async function fetchRoomDeleteAuth(userNickname){
+  try {
+    const data = await axios.get(`/talk/room/${userNickname}`);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+// room삭제
+async function fetchRoomDelete(name){
+  try {
+    const data = await axios.delete(`/talk/room/${name}`);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
 }
 
 export {
   fetchLogout,
-  fetchCommunity,
-  fetchPost,
-  fetchComments
+  fetchRoom,
+  fetchChatting,
+  fetchRoomDeleteAuth,
+  fetchRoomDelete,
 }

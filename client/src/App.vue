@@ -30,7 +30,7 @@ export default {
       return this.$cookies.get('login_access_token');
     },
     jwtDecoded(){
-      return this.$jwt.decode(this.loginCookie).iss;
+      return this.$jwt.decode(this.loginCookie);
     }
   },
   created(){
@@ -39,9 +39,12 @@ export default {
       return this.$store.dispatch("LOGOUT");
     }
 
+    const { iss, nickname } = this.jwtDecoded;
+
     // 로그인상태
-    if(this.jwtDecoded === this.issur){
+    if(iss === this.issur){
       this.$store.dispatch("LOGIN_SUCCESS");
+      this.$store.dispatch("USER_NICKNAME", nickname);
     }
   }
 }

@@ -13,7 +13,7 @@ const passport = require('passport');
 const passportConfig = require('./passport');
 
 // 소켓
-// const webSocket = require('./socket.js');
+const webSocket = require('./socket.js');
 
 dotenv.config();
 const app = express();
@@ -51,8 +51,10 @@ app.use(passport.session());
 // 라우터
 const indexRouter = require('./routes');
 const authRouter = require('./routes/auth.js');
+const talkRouter = require('./routes/talk.js');
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/talk', talkRouter);
 
 // 404에러처리
 app.use((req, res, next) => {
@@ -69,4 +71,4 @@ const server = app.listen(app.get('port'), ()=>{
   console.log(`${app.get('port')}번 대기중`);
 });
 
-// webSocket(server);
+webSocket(server);

@@ -4,5 +4,8 @@ export default{
   },
   LOGOUT(context){
     context.commit("SET_LOGOUT");
+  },
+  USER_NICKNAME(context, nickname){
+    context.commit("SET_USER_NICKNAME", nickname);
   }
 }

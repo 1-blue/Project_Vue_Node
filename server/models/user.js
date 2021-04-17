@@ -20,7 +20,7 @@ module.exports = class User extends Sequelize.Model {
     }, {
       sequelize,
       timestamps: true,
-      paranoid: true,
+      paranoid: false,
       underscored: false,
       modelName: "User",
       tableName: "users",
@@ -30,7 +30,10 @@ module.exports = class User extends Sequelize.Model {
   }
 
   static associate(db){
-    // 유저와 채팅방 1 : N
+    // 유저와 채팅방 M : N
     db.User.belongsToMany(db.Room, { through: "UserRoom", foreignKey: "userId", targetKey: "id" });
+
+    // 유저와 채팅 1 : N
+    db.User.hasMany(db.Chatting, { foreignKey: "userId", targetKey: "id" });
   }
 }
