@@ -58,14 +58,14 @@ module.exports = server => {
       socket.nickname = nickname;
       socket.roomName = roomName;
 
-      // 유저 입장메시지 전송
-      io.to(roomName).emit("system", `${nickname}님이 채팅방에 입장하셨습니다.`);
+      // 유저 입장메시지 전송 (자기자신제외)
+      socket.broadcast.to(roomName).emit("system", `${nickname}님이 채팅방에 입장하셨습니다.`);
     });
 
     // 채팅방 퇴장
     socket.on("leaveRoom", async () => {
-      // 유저 퇴장 메시지 전송
-      io.to(socket.roomName).emit("system", `${socket.nickname}님이 채팅방에 퇴장하셨습니다.`);
+      // 유저 퇴장 메시지 전송 (자기자신제외)
+      socket.broadcast.to(socket.roomName).emit("system", `${socket.nickname}님이 채팅방에 퇴장하셨습니다.`);
 
       // 방에서 나가기
       socket.leave(socket.roomName);

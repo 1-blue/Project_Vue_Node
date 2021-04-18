@@ -73,4 +73,12 @@ a{
 .shadow{
   box-shadow: 10px 5px 5px gray;
 }
+
+.active{
+  display: flex;
+}
+
+.unactive{
+  display: none;
+}
 </style>
