@@ -35,5 +35,11 @@ module.exports = class User extends Sequelize.Model {
 
     // 유저와 채팅 1 : N
     db.User.hasMany(db.Chatting, { foreignKey: "userId", targetKey: "id" });
+
+    // 유저와 포스트 1 : N
+    db.User.hasMany(db.Post, { foreignKey: "userId", targetKey: "id" });
+
+    // 유저와 댓글 1 : N
+    db.User.hasMany(db.Comment, { foreignKey: "userId", targetKey: "id" });
   }
 }
