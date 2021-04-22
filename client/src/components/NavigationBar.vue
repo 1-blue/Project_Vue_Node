@@ -7,9 +7,10 @@
       </li>
 
       <!-- 각종 기능들 페이지 -->
-      <li>
+      <li class="function__link">
         <router-link to="/community">COMMUNITY</router-link>
         <router-link to="/chatting">CHATTING</router-link>
+        <router-link to="/webGame">WebGame</router-link>
       </li>
 
       <!-- 인증페이지 -->
@@ -23,7 +24,13 @@
         <span @click="logout">LOGOUT</span>
         <router-link to="/user">MYINFO</router-link>
       </li>
+
+      <li id="burger__link">
+        <i class="fas fa-bars burger__icon"></i>
+      </li>
     </ul>
+
+    
 
     <router-view></router-view>
   </section>
@@ -47,22 +54,41 @@ export default {
     isLogin(){
       return this.$store.state.isLogin;
     }
+  },
+  mounted(){
+    // 768px이하일때 햄버그메뉴활성화
+    const hamburgerMenu = document.querySelector("#burger__link");
+    const navList = document.querySelector(".link__list");
+    const navArray = Array.prototype.slice.call(navList.childNodes);    // nodeList를 Array로 변환
+
+    hamburgerMenu.addEventListener('click', () => {
+      navArray.forEach(v => {
+        if(v.className){
+          v.classList.toggle('active');
+        }
+      });
+    });
   }
 }
 </script>
 
-<style>
+<style scoped>
 #navigation__bar__container{
   --navigation-height: 10vh;
   --navigation-margin-bottom: 2em;
-  --navigation-background-color: black;
+  --navigation-background-color: rgb(37, 37, 37);
   --link-interval: 2.5vw;
   --link-font-size: 1.5rem;
+  --link-color: rgb(221, 221, 221);
+  --link-hover-color: #F7B70F;
+  --link-hover-back-color: coral;
+
 
   height: inherit;
 }
 
 .link__list{
+  position: relative;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -71,13 +97,13 @@ export default {
   margin-bottom: var(--navigation-margin-bottom);
 }
 /* navigation의 li상하 가운데정렬 */
-.link__list li{
+.logo__link, .function__link, .auth__link, .burger__link{
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .link__list span{
-  color: white;
+  color: var(--link-color);
 }
 /* li태그 끼리 간격조절 */
 .link__list a, .link__list span {
@@ -87,9 +113,71 @@ export default {
 }
 /* li태그 hover */                                    /* 현재 선택한 페이지 표시 */
 .link__list a:hover, .link__list span:hover, .router-link-exact-active {
-  color: wheat;
-  border-bottom: 7px solid wheat;
-  padding-top: 3vh;
-  padding-bottom: 1vh;
+  color: var(--link-hover-color);
+  border-bottom: 7px solid var(--link-hover-color);
+  padding-top: 2.8vh;
+  padding-bottom: 1.8vh;
+}
+
+#burger__link{
+  display: none;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  font-size: 2rem;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px)  {
+  .link__list a{
+    padding: 0.5em 20%;
+    margin: 0.2em 0;
+  }
+
+  .link__list a:hover, .link__list span:hover {
+    color: var(--link-color);
+    background: var(--link-hover-back-color);
+    border-bottom: 0;
+    padding: 0.5em 20%;
+    border-radius: 1em;
+  }
+
+  .router-link-exact-active{
+    color: var(--link-hover-color);
+    border-bottom: 0;
+    padding: 0.5em 20%;
+  }
+
+  .link__list{
+    flex-direction: column;
+    height: auto;
+  }
+
+  .logo__link,
+  .function__link,
+  .auth__link,
+  .burger__link{
+    display: none;
+  }
+
+  .function__link,
+  .auth__link,
+  .burger__link{
+    flex-direction: column;
+  }
+
+  .logo__link{
+    display: flex;
+  }
+
+  #burger__link{
+    display: inline-block;
+  }
+
+
+  .active{
+    display: flex;
+  }
 }
 </style>

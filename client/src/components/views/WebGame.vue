@@ -1,16 +1,16 @@
 <template>
-  <section id="community__container">
-    <h1>Community</h1>
+  <section id="web__game__container">
+    <h1>WebGame</h1>
   </section>
 </template>
 
 <script>
 
 export default {
-  name: 'Community',
+  name: 'WebGame',
 }
 </script>
 
 <style scoped>
 
-</style>
+</style>>

@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #register__container{
   display: flex;
   flex-direction: column;

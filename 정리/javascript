@@ -1,0 +1,2 @@
+.childNodes : 자식노드들모두 nodelist로 반환
+Array.prototype.slice.call(nodelist) : nodelist모두 배열형태로 반환     // 배열에서 제공되는 api 사용하기위해 변환하는것임

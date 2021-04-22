@@ -164,6 +164,60 @@ _는 어떤글자던간에 한글자만
 ## 4. COUNT(*)
 SELECT spicies, COUNT(*) FROM 테이블명;
 spicies가 각각 몇개인지 개수출력해줌
+레코드의 수
+
+## 5. SUM()
+그룹에다가 sum(score) 처럼하면 그룹내부의 score의 합이 나옴
+
+## 6. AVG()
+마찬가지로 그룹에다가 걸어야함
+
+## 7. MOD()
+나누기
+
+## 8. STDEV()
+표준편차
+
+## 9. VAR_SAMP()
+분산
+
+## 10. CAST()
+형변환연산자
+CAST(기존값 AS 변환할자료형);
+SELECT CAST('2018-12-31 11:22:22.123' AS DATATIME);
+
+## 11. CONVERT
+CONVERT(기존값, 변환할자료형);
+
+## 12. NOW()
+
+## 13. str_to_date()
+str_to_date('기존날짜', '출력형태');
+str_to_date('2019/12/31', '%Y/%m/%d');
+
+## 14. CONCAT
+문자열 합치는 연산자
+# 1. CONCAT('aaa', 'bbb');
+aaabbb
+# 2. CONCAT__ws('|', 'aaa', 'bbb');
+aaa|bbb
+# 03. group_concat()
+group by로 묶은 것들을 모두 출력할 때 사용
+ex) select address, group_concat(name) from students group by address;
+address로 묶은 그룹안에 각각의 이름을 전부 출력해줌
+
+## 15. IF()
+IF(조건, 참일때, 거짓일때)
+
+## 16. IFNULL()
+IFNULL(조건, 거짓일때출력);
+
+###### =================== TRANSACTION ===================
+데이터를 세이브하고 쿼리문을 실행할 때 사용
+# 1. START TRANSACTION    => 세이브시작
+# 2. 데이터를 변환시킬 쿼리문을 입력함
+# 3-1. COMMIT;      => 입력했던 쿼리문들을 적용시킴
+# 3-2. ROLLBACK;    => 입력했던 쿼리문 적용안함
 
 ###### =================== SELECT 조건예시 ===================
 ## LIKE
@@ -249,3 +303,4 @@ select * from str;  === ( select * from students where address = '진주');
 
 ## 2. view 삭제
 DROP VIEW view이름;
+

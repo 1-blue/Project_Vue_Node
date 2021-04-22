@@ -234,7 +234,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #Chatting__container{
   display: flex;
   flex-direction: column;
