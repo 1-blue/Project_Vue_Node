@@ -30,8 +30,6 @@
       </li>
     </ul>
 
-    
-
     <router-view></router-view>
   </section>
 </template>
@@ -63,8 +61,18 @@ export default {
 
     hamburgerMenu.addEventListener('click', () => {
       navArray.forEach(v => {
+        // 클래스면 보이게만들기
         if(v.className){
           v.classList.toggle('active');
+
+          //링크클릭하면 햄버그메뉴닫기
+          v.addEventListener('click', () => {
+            navArray.forEach(vv => {
+              if(vv.className){
+                vv.classList.remove("active");
+              }
+            })
+          });
         }
       });
     });

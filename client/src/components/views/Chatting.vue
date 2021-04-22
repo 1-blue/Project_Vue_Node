@@ -374,13 +374,17 @@ export default {
 }
 
 .chatting__exit__btn{
-    position: absolute;
-    top: 20px;
-    left: 12px;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    font-size: 2em;
+  position: absolute;
+  top: 20px;
+  left: 12px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 2em;
+}
+
+.chatting__exit__btn:hover{
+  color: rgb(199, 199, 199);
 }
 
 .chat__list > h6{
@@ -397,7 +401,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 400px;
-  height: 50vh;
+  height: 60vh;
   background: var(--room-background-color);
   overflow: auto;
 }
@@ -447,6 +451,9 @@ export default {
 .button__active{
   background: var(--signature-color);
   cursor: pointer;
-}
+} 
 
+.active{
+  display: flex;
+}
 </style>
