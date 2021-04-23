@@ -50,10 +50,21 @@ async function fetchRoomDelete(name){
   }
 }
 
+// 게시글정보요청
+async function fetchCommunity(){
+  try {
+    const data = await axios.get(`/community`);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export {
   fetchLogout,
   fetchRoom,
   fetchChatting,
   fetchRoomDeleteAuth,
   fetchRoomDelete,
+  fetchCommunity,
 }

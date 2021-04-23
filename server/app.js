@@ -52,9 +52,11 @@ app.use(passport.session());
 const indexRouter = require('./routes');
 const authRouter = require('./routes/auth.js');
 const talkRouter = require('./routes/talk.js');
+const communityRouter = require('./routes/community.js');
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/talk', talkRouter);
+app.use('/community', communityRouter);
 
 // 404에러처리
 app.use((req, res, next) => {

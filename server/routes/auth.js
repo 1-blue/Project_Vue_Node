@@ -21,6 +21,8 @@ router.post('/register', idOverlapCheck, nicknameOverlapCheck, isNotLoggedIn, as
       password: hashPassword,
     });
   } catch (error) {
+    console.log("=========error==========");
+    console.log(error);
     res.send(error);
   }
 
