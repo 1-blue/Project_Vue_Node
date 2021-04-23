@@ -5,9 +5,9 @@
     </router-link>
     <ul class="community__list">
       <li class="community__item" v-for="(post, index) in posts" :key="index" >
-        <span>{{ post.title }}</span>
+        <router-link :to="`/community/${post.id}`">{{ post.title }}</router-link>
         <div class="community__add__info">
-          <span>{{ post.User.nickname }}</span>
+          <router-link :to="`/community/${post.User.id}`">{{ post.User.nickname }}</router-link>
           <span>{{ post.dateFormat }}</span>
         </div>
       </li>

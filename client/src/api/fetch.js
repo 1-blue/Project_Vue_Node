@@ -50,10 +50,20 @@ async function fetchRoomDelete(name){
   }
 }
 
-// 게시글정보요청
+// 전체게시글 요약정보요청
 async function fetchCommunity(){
   try {
     const data = await axios.get(`/community`);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+// 해당게시글 상세정보요청
+async function fetchPost(postId){
+  try {
+    const data = await axios.get(`/community/${postId}`);
     return data.data;
   } catch (error) {
     return error;
@@ -67,4 +77,5 @@ export {
   fetchRoomDeleteAuth,
   fetchRoomDelete,
   fetchCommunity,
+  fetchPost,
 }
