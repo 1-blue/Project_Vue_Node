@@ -70,6 +70,9 @@ a{
   text-decoration: none;
   color: white;
 }
+input{
+  padding: 0;
+}
 .shadow{
   box-shadow: 10px 5px 5px gray;
 }

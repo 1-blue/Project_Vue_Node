@@ -1,13 +1,23 @@
 <template>
   <section id="post__container" v-if="dataReady">
-    <ul class="post__list">
+    <!-- 정상적으로 데이터 받았을 경우 (로그인했을경우) -->
+    <ul class="post__list" v-if="postData">
+      <!-- exit버튼 -->
       <i class="fas fa-sign-out-alt post__exit__icon" @click="exit"></i>
+
+      <!-- title -->
       <li class="post__title">
         <span>{{ postData.title }}</span>
       </li>
+
+      <span class="horizontal__line" />
+
+      <!-- content -->
       <li class="post__content">
         <span>{{ postData.content }}</span>
       </li>
+
+      <!-- 부가정보 -->
       <li class="post__info">
         <span class="post__info__user">
           <i class="fas fa-user"></i>
@@ -18,15 +28,29 @@
           {{ postData.dateFormat }}
         </span>
       </li>
+
+      <span class="horizontal__line" />
+
+      <!-- 댓글기능 -->
+      <comment />
     </ul>
+
+    <!-- 데이터전송못받았을경우 (로그인안하고 접근할경우) -->
+    <div v-else>
+      접근권한이 없습니다. 로그인후에 접근해주세요
+    </div>
   </section>
 </template>
 
 <script>
+import Comment from './Comment.vue';
 import { fetchPost } from '../../api/fetch.js';
 
 export default {
   name: 'post',
+  components: {
+    Comment,
+  },
   data(){
     return{
       dataReady: false,
@@ -43,8 +67,11 @@ export default {
   },
 
   async created(){
-    const data = await fetchPost(this.$route.params.id);
-    this.postData = data;
+    this.postData = await fetchPost(this.$route.params.id);
+      
+    if(this.postData.message){
+      this.postData = false;
+    }
 
     this.dataReady = true;
   }
@@ -65,6 +92,12 @@ export default {
   --title-font-size: 2rem;
   --user-icon-size: 0.8em;
   --clock-icon-size: 0.5em;
+}
+
+.horizontal__line{
+  width: 100%;
+  border-bottom: 2px solid;
+  margin: 1em 0;
 }
 
 .post__list{
@@ -89,12 +122,12 @@ export default {
 
 .post__content{
   flex-grow: 1;
+  min-height: 20vh;
 }
 
 .post__title{
   font-size: var(--title-font-size);
   font-weight: bold;
-  margin-bottom: 0.5em;
 }
 
 .post__info{

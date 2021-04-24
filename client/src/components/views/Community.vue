@@ -1,17 +1,23 @@
 <template>
   <section id="community__container">
-    <router-link class="post__append__link" to="/postAppend">
-      게시글올리기
-    </router-link>
-    <ul class="community__list">
-      <li class="community__item" v-for="(post, index) in posts" :key="index" >
-        <router-link :to="`/community/${post.id}`">{{ post.title }}</router-link>
-        <div class="community__add__info">
-          <router-link :to="`/community/${post.User.id}`">{{ post.User.nickname }}</router-link>
-          <span>{{ post.dateFormat }}</span>
-        </div>
-      </li>
-    </ul>
+    <div v-if="posts">
+      <router-link class="post__append__link" to="/postAppend" v-if="isLogin">
+        게시글올리기
+      </router-link>
+      <ul class="community__list">
+        <li class="community__item" v-for="(post, index) in posts" :key="index" >
+          <router-link :to="`/community/${post.id}`">{{ post.title }}</router-link>
+          <div class="community__add__info">
+            <router-link :to="`/community/${post.User.id}`">{{ post.User.nickname }}</router-link>
+            <span>{{ post.dateFormat }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div v-else>
+      접근권한이 없습니다. 로그인후에 접근해주세요
+    </div>
   </section>
 </template>
 
@@ -28,9 +34,17 @@ export default {
   methods: {
 
   },
+  computed: {
+    isLogin(){
+      return this.$store.state.isLogin;
+    }
+  },
   async created(){
-    const data = await fetchCommunity();
-    this.posts = data;
+    this.posts = await fetchCommunity();
+
+    if(this.posts.message){
+      this.posts = false;
+    }
   }
 }
 </script>
@@ -49,7 +63,7 @@ export default {
 
 .community__list{
   width: 80%;
-  height: 70vh;
+  min-height: 70vh;
   background: lightgray;
   border: 3px solid black;
   padding: 1em;

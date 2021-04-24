@@ -70,6 +70,16 @@ async function fetchPost(postId){
   }
 }
 
+// 해당게시글의 댓글 불러오기
+async function fetchComment(postId){
+  try {
+    const data = await axios.get(`/community/comment/${postId}`);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export {
   fetchLogout,
   fetchRoom,
@@ -78,4 +88,5 @@ export {
   fetchRoomDelete,
   fetchCommunity,
   fetchPost,
+  fetchComment,
 }
