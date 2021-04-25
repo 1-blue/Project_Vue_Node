@@ -21,9 +21,7 @@ router.post('/register', idOverlapCheck, nicknameOverlapCheck, isNotLoggedIn, as
       password: hashPassword,
     });
   } catch (error) {
-    console.log("=========error==========");
-    console.log(error);
-    res.send(error);
+    return res.redirect("http://localhost:9000/#/register?message=createUserError")
   }
 
   return res.redirect("http://localhost:9000/#/login?message=registerSuccess")

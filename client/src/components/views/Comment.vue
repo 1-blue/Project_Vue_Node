@@ -20,10 +20,10 @@
         <input type="hidden" :value="nickname" name="nickname" />
         <input type="hidden" :value="postId" name="postId" />
         <div class="comment__input_area">
-          <input type="text" name="comment" class="comment__input"/>
+          <input type="text" name="comment" class="comment__input" v-model="tempComment"/>
           <span class="comment__input__effect"/>
         </div>
-        <button type="submit" class="comment__button">댓글</button>
+        <button type="submit" class="comment__button" :class="{ active__btn: !isCommentSubmit }" :disabled="isCommentSubmit">댓글</button>
       </form>
 
       <!-- 댓글리스트보여주지 -->
@@ -56,8 +56,8 @@
               <input type="hidden" name="nickname" :value="nickname" />
               <input type="hidden" name="postId" :value="postId" />
               <input type="hidden" name="commentId" :value="comment.id" />
-              <input type="text" name="comment" />
-              <button type="submit">대댓글</button>
+              <input type="text" name="comment" v-model="tempRecomment"/>
+              <button type="submit" class="recomment__button" :class="{ active__btn: !isRecommentSubmit }" :disabled="isRecommentSubmit">대댓글</button>
             </form>
 
             <span class="horizontal__line" />
@@ -104,6 +104,8 @@ export default {
   data(){
     return{
       commentList: null,
+      tempComment: "",
+      tempRecomment: "",
     }
   },
   methods: {
@@ -117,7 +119,7 @@ export default {
           return;
         }
       });
-    }
+    },
   },
   computed: {
     postId(){
@@ -128,6 +130,12 @@ export default {
     },
     state(){
       return this.$route.query;
+    },
+    isCommentSubmit(){
+      return this.tempComment.length === 0;
+    },
+    isRecommentSubmit(){
+      return this.tempRecomment.length === 0;
     }
   },
   async created(){
@@ -262,8 +270,20 @@ export default {
   margin-left: 2em;
 }
 
+.comment__button, .recomment__button{
+  background: lightgray;
+  color: white;
+  border: 0;
+  cursor: not-allowed;
+}
+
 .active{
   display: flex;
+}
+
+.active__btn{
+  background: blue;
+  cursor: pointer;
 }
 
 </style>

@@ -9,6 +9,9 @@
     <div v-else-if="message === 'passwordCheck'" class="error__message">
       패스워드불일치
     </div>
+    <div v-else-if="message === 'createUserError'" class="error__message">
+      유저생성오류 잠시후 다시시도해주세요
+    </div>
 
     <form action="/auth/register" method="post" class="register__form">
       <!-- 제목 -->

@@ -39,11 +39,15 @@ router.get('/', async (req, res) => {
 router.post('/append', isLoggedIn, async (req, res) => {
   const { title, content } = req.body;
 
-  await Post.create({
-    title,
-    content,
-    userId: req.user.id
-  });
+  try {
+    await Post.create({
+      title,
+      content,
+      userId: req.user.id
+    });    
+  } catch (error) {
+    return res.redirect("/#/community?state=postAppendError")
+  }
 
   return res.redirect("/#/community");
 });

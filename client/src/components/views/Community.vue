@@ -1,5 +1,8 @@
 <template>
   <section id="community__container">
+    <div v-if="state">
+      <h1 v-if="state === 'postAppendError'">게시글업로드에러입니다. 잠시후에다시시도해주세요</h1>
+    </div>
     <template v-if="posts">
       <router-link class="post__append__link" to="/postAppend" v-if="isLogin">
         게시글올리기
@@ -37,6 +40,9 @@ export default {
   computed: {
     isLogin(){
       return this.$store.state.isLogin;
+    },
+    state(){
+      return this.$route.query.state;
     }
   },
   async created(){
