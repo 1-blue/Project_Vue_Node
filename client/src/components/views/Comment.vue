@@ -10,6 +10,9 @@
         <div v-if="state === 'commentAppendError'">
           댓글 업로드 에러입니다. 잠시후에 다시시도해주세요
         </div>
+        <div v-if="state === 'recommentAppendError'">
+          대댓글 업로드 에러입니다. 잠시후에 다시시도해주세요
+        </div>
       </div>
 
       <!-- 댓글업로드창 -->
@@ -25,25 +28,64 @@
 
       <!-- 댓글리스트보여주지 -->
       <ul class="comment__list">
-        <li v-for="comment in commentList" :key="comment.id" class="comment" >
-          <!-- 사용자명 -->
-          <span class="user__name">
-            <i class="fas fa-user"></i>
-            {{ comment.User.nickname }}
-          </span>
+        <li v-for="comment in commentList" :key="comment.id">
+          <!-- 댓글영역 -->
+          <div v-if="!comment.commentId" class="comment">
+            <!-- 사용자명 -->
+            <span class="user__profile">
+              <span class="user__name">
+                <i class="fas fa-user"></i>
+                {{ comment.User.nickname }}
+              </span>
+              <span class="recomment__toggle" @click="commentToggle(comment.id)">답글</span>
+            </span>
 
-          <!-- 댓글내용 -->
-          <span class="content">
-            {{ comment.comment }}
-          </span>
+            <!-- 댓글내용 -->
+            <span class="content">
+              {{ comment.comment }}
+            </span>
 
-          <!-- 등록시간 -->
-          <span class="updated__time">
-            <i class="far fa-clock"></i>
-            {{ comment.dateFormat }}
-          </span>
+            <!-- 등록시간 -->
+            <span class="updated__time">
+              <i class="far fa-clock"></i>
+              {{ comment.dateFormat }}
+            </span>
 
-          <span class="horizontal__line" />
+            <!-- 대댓글등록 -->
+            <form action="/community/recomment" method="post" class="recomment__form" :data-value="comment.id">
+              <input type="hidden" name="nickname" :value="nickname" />
+              <input type="hidden" name="postId" :value="postId" />
+              <input type="hidden" name="commentId" :value="comment.id" />
+              <input type="text" name="comment" />
+              <button type="submit">대댓글</button>
+            </form>
+
+            <span class="horizontal__line" />
+          </div>
+          
+          <!-- 대댓글영역 -->
+          <div v-else class="recomment">
+            <!-- 사용자명 -->
+            <span class="user__profile">
+              <span class="user__name">
+                <i class="fas fa-user"></i>
+                {{ comment.User.nickname }}
+              </span>
+            </span>
+
+            <!-- 댓글내용 -->
+            <span class="content">
+              {{ comment.comment }}
+            </span>
+
+            <!-- 등록시간 -->
+            <span class="updated__time">
+              <i class="far fa-clock"></i>
+              {{ comment.dateFormat }}
+            </span>
+
+            <span class="horizontal__line" />
+          </div>
         </li>
       </ul>
     </div>
@@ -65,7 +107,17 @@ export default {
     }
   },
   methods: {
+    commentToggle(commentId){
+      const recommentForm = document.querySelectorAll(".recomment__form");
 
+      // 대댓글 form 토글설정
+      recommentForm.forEach(v => {
+        if(commentId === Number(v.dataset.value)){
+          v.classList.toggle("active");
+          return;
+        }
+      });
+    }
   },
   computed: {
     postId(){
@@ -79,11 +131,42 @@ export default {
     }
   },
   async created(){
-    this.commentList = await fetchComment(this.postId);
+    const temp = await fetchComment(this.postId);
 
-    if(this.commentList.message){
+    if(temp.message){
       this.commentList = false;
+      return;
     }
+
+    // 댓글과 대댓글 정렬을 위해 배열에다 넣고 정렬
+    const tempArray = [];
+    for(const item of temp){
+      tempArray.push(item);
+    }
+
+    const recommentSortVar = {};
+
+    tempArray.forEach((v, i) => {
+      // 대댓글이면
+      if(v.commentId){
+        tempArray.forEach((value, index) => {
+          
+          if(v.commentId === value.id){
+            // 대댓글 역순정렬
+            if(!recommentSortVar[`${v.commentId}`]){
+              recommentSortVar[`${v.commentId}`] = 1;
+            } else {
+              recommentSortVar[`${v.commentId}`]++;
+            }
+
+            // 댓글의 위치 바로 밑으로 이동
+            let temp2 = tempArray.splice(i, 1);
+            tempArray.splice(index + recommentSortVar[`${v.commentId}`], 0, temp2[0]);
+          }
+        });
+      }
+    });
+    this.commentList = tempArray;
   }
 }
 </script>
@@ -140,8 +223,13 @@ export default {
   flex-direction: column;
 }
 
-.user__name, .content, .updated__time{
+.user__profile, .content, .updated__time{
   margin: 0.1em 0;
+}
+
+.user__profile{
+  display: flex;
+  justify-content: space-between;
 }
 
 .user__name{
@@ -149,15 +237,33 @@ export default {
   font-weight: bold;
 }
 
+.recomment__toggle{
+  cursor: pointer;
+}
+
 .updated__time{
   font-size: 0.5em;
   color: gray;
+}
+
+.recomment__form{
+  display: none;
 }
 
 .horizontal__line{
   width: 100%;
   border-bottom: 2px solid lightgray;
   margin: 1em 0;
+}
+
+.recomment{
+  display: flex;
+  flex-direction: column;
+  margin-left: 2em;
+}
+
+.active{
+  display: flex;
 }
 
 </style>

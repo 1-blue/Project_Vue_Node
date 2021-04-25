@@ -90,4 +90,23 @@ router.post('/comment', isLoggedIn, async (req, res) => {
   return res.redirect(`/#/community/${postId}`);
 });
 
+// 대댓글 입력하기
+router.post("/recomment", isLoggedIn, async (req, res) => {
+  const { nickname, postId, commentId, comment } = req.body;
+  
+  try {
+    const userId = await User.findOne({ where: { nickname }, attributes: ["id"] });
+    await Comment.create({
+      userId: userId.id,
+      postId,
+      commentId,
+      comment
+    });
+  } catch (error) {
+    return res.redirect(`/#/community/${postId}?state=recommentAppendError`);
+  }
+
+  return res.redirect(`/#/community/${postId}`);
+});
+
 module.exports = router;

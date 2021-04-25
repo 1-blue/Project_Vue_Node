@@ -110,6 +110,7 @@ export default {
   background: var(--post-background-color);
   box-shadow: var( --post-shadow);
   padding: var(--post-padding);
+  margin-bottom: 10vh;
 }
 
 .post__exit__icon{

@@ -1,6 +1,6 @@
 <template>
   <section id="community__container">
-    <div v-if="posts">
+    <template v-if="posts">
       <router-link class="post__append__link" to="/postAppend" v-if="isLogin">
         게시글올리기
       </router-link>
@@ -13,7 +13,7 @@
           </div>
         </li>
       </ul>
-    </div>
+    </template>
 
     <div v-else>
       접근권한이 없습니다. 로그인후에 접근해주세요
