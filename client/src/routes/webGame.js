@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 // 웹게임
-import MineSweeper from '../components/views/games/mineSweeper.vue';
+import MineSweeper from '../components/views/games/MineSweeper.vue';
 
 Vue.use(VueRouter);
 

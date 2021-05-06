@@ -10,7 +10,7 @@ router.post('/register', idOverlapCheck, nicknameOverlapCheck, isNotLoggedIn, as
   const { nickname, identify, password, passwordCheck } = req.body;
 
   if(password !== passwordCheck){
-    return res.redirect("http://localhost:9000/#/register?message=passwordCheck")
+    return res.redirect(`/#/register?message=passwordCheck`)
   }
 
   const hashPassword = await bcrypt.hash(password, 6);
@@ -21,10 +21,10 @@ router.post('/register', idOverlapCheck, nicknameOverlapCheck, isNotLoggedIn, as
       password: hashPassword,
     });
   } catch (error) {
-    return res.redirect("http://localhost:9000/#/register?message=createUserError")
+    return res.redirect(`/#/register?message=createUserError`)
   }
 
-  return res.redirect("http://localhost:9000/#/login?message=registerSuccess")
+  return res.redirect(`/#/login?message=registerSuccess`)
 });
 
 // 로그인
@@ -32,12 +32,12 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user) => {
     // 서버측에러
     if(authError){
-      return res.redirect("http://localhost:9000/#/login?message=ServerError");
+      return res.redirect(`/#/login?message=ServerError`);
     }
 
     // 일치유저존재하지않음 즉 아이디나 패스워드틀림
     if(!user){
-      return res.redirect("http://localhost:9000/#/login?message=UserNotFound");
+      return res.redirect(`/#/login?message=UserNotFound`);
     }
 
     // 로그인성공
@@ -59,7 +59,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         }
       )
       res.cookie("login_access_token", token, { httpOnly: false });
-      return res.redirect("http://localhost:9000/#/home?message=loginSuccess");
+      return res.redirect(`/#/home?message=loginSuccess`);
     })
   })(req, res, next);   // 미들웨어내부에서 다른미들웨어 호출
 });
