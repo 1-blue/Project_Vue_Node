@@ -9,7 +9,7 @@ router.get('/:postId', isLoggedIn, async (req, res) => {
   try {
     const targetPost = await Post.findOne({ 
       where: { id: postId },
-      attributes: [ "id", "title", [ sequelize.fn('date_format', sequelize.col('post.createdAt'), '%Y-%m-%d'), "dateFormat"], "content" ], 
+      attributes: [ "id", "title", [ sequelize.fn('date_format', sequelize.col('Post.createdAt'), '%Y-%m-%d'), "dateFormat"], "content" ], 
       include: { model: User, attributes: ["id", "nickname"] }
     });
 
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
   try {
     // 게시글페이지에서 필요한것만 불러오기 ( title, update시간, 게시글작성자 )
     const posts = await Post.findAll({
-      attributes: [ "id", "title", [ sequelize.fn('date_format', sequelize.col('post.createdAt'), '%Y-%m-%d'), "dateFormat"] ], 
+      attributes: [ "id", "title", [ sequelize.fn('date_format', sequelize.col('Post.createdAt'), '%Y-%m-%d'), "dateFormat"] ], 
       include: { model: User, attributes: ["id", "nickname"] }
     });
     
@@ -60,7 +60,7 @@ router.get('/comment/:postId', isLoggedIn, async (req, res) => {
   try {
     commentList = await Comment.findAll({
       where: { postId },
-      attributes: [ "id", "comment", "commentId", "userId", [ sequelize.fn('date_format', sequelize.col('comment.updatedAt'), '%d일 %h:%i:%s'), "dateFormat"] ],
+      attributes: [ "id", "comment", "commentId", "userId", [ sequelize.fn('date_format', sequelize.col('Comment.updatedAt'), '%d일 %h:%i:%s'), "dateFormat"] ],
       include: { model: User, attributes: ["nickname"]}
     });
   } catch (error) {

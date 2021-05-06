@@ -183,7 +183,7 @@ export default {
 
   async created(){
     // 서버와 소켓연동
-    this.socket = io('http://localhost:9000');
+    this.socket = io('/#/');
 
     // 현재 채팅방 목록 가져오기 ( + 접근권한체크)
     this.getRoomList();
