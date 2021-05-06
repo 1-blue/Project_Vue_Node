@@ -103,4 +103,3 @@ user.removeComments(comment의 배열);  // 유저와 연동된 comment들을 �
 ## 각종알아야할것
 # 함수사용 기본형식 [sequelize.fn("사용할 함수명", 사용할 column, "포멧형식"), "대체할 column명"]
 대표적 사용예) attributes: [ "title", [ sequelize.fn('date_format', sequelize.col('post.createdAt'), '%Y-%m-%d'), "dateFormat"] ]
-
